@@ -6,7 +6,7 @@ use std::result::Result as StdResult;
 use std::sync::{Arc, RwLock};
 
 use crate::errors::{Error, Result};
-use crate::util;
+use crate::util::{self, Uuid};
 use crate::{
     Datastore, Edge, EdgeDirection, EdgeKey, EdgeProperties, EdgeProperty, EdgePropertyQuery, EdgeQuery, Identifier,
     Json, NamedProperty, Vertex, VertexProperties, VertexProperty, VertexPropertyQuery, VertexQuery,
@@ -17,7 +17,6 @@ use chrono::offset::Utc;
 use chrono::DateTime;
 use serde::{Deserialize, Serialize};
 use tempfile::NamedTempFile;
-use uuid::Uuid;
 
 macro_rules! iter_vertex_values {
     ($self:expr, $iter:expr) => {

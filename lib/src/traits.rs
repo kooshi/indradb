@@ -1,8 +1,8 @@
 use crate::errors::{Error, Result};
 use crate::models;
 use crate::models::{EdgeQueryExt, VertexQueryExt};
+use crate::util::Uuid;
 use std::vec::Vec;
-use uuid::Uuid;
 
 /// Specifies a datastore implementation.
 ///

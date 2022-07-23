@@ -1,11 +1,11 @@
 use std::str::FromStr;
 use std::u32;
 
+use crate::util::Uuid;
 use crate::{errors, EdgeKey, Identifier};
 
 use chrono::offset::Utc;
 use chrono::DateTime;
-use uuid::Uuid;
 
 macro_rules! vertex_query_type {
     ($name:ident, $variant:ident) => {

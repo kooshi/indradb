@@ -7,7 +7,6 @@ use crate::{
 
 use chrono::offset::Utc;
 use chrono::Timelike;
-use uuid::Uuid;
 
 pub fn should_get_a_valid_edge<D: Datastore>(datastore: &D) {
     let vertex_t = models::Identifier::new("test_vertex_type").unwrap();

@@ -2,7 +2,6 @@ use crate::{models, Datastore};
 
 use chrono::offset::Utc;
 use chrono::DateTime;
-use uuid::Uuid;
 
 // TODO: remove &mut
 

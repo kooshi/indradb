@@ -1,9 +1,7 @@
-use crate::{Edge, EdgeKey, Identifier, Vertex};
-
-use uuid::Uuid;
+use crate::{util::Uuid, Edge, EdgeKey, Identifier, Vertex};
 
 /// Represents a vertex property.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct VertexProperty {
     /// The id of the vertex.
     pub id: Uuid,
@@ -24,7 +22,7 @@ impl VertexProperty {
 }
 
 /// A property.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct NamedProperty {
     /// The id of the vertex.
     pub name: Identifier,
@@ -45,7 +43,7 @@ impl NamedProperty {
 }
 
 /// A vertex with properties.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct VertexProperties {
     /// The vertex.
     pub vertex: Vertex,
@@ -65,7 +63,7 @@ impl VertexProperties {
 }
 
 /// An edge with properties.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct EdgeProperties {
     /// The edge.
     pub edge: Edge,
@@ -85,7 +83,7 @@ impl EdgeProperties {
 }
 
 /// Represents an edge property.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct EdgeProperty {
     /// The key to the edge.
     pub key: EdgeKey,

@@ -1,5 +1,4 @@
 use crate::{models, Datastore, EdgeQueryExt, Error, VertexQueryExt};
-use uuid::Uuid;
 
 fn setup_vertex_with_indexed_property<D: Datastore>(datastore: &D, property_name: &models::Identifier) -> Uuid {
     datastore.index_property(property_name.clone()).unwrap();

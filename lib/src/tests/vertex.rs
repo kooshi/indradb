@@ -3,8 +3,6 @@ use std::collections::HashSet;
 use super::util::{create_edge_from, create_edges};
 use crate::{models, Datastore, EdgeQueryExt, RangeVertexQuery, SpecificVertexQuery, VertexQueryExt};
 
-use uuid::Uuid;
-
 pub fn should_create_vertex_from_type<D: Datastore>(datastore: &D) {
     let t = models::Identifier::new("test_vertex_type").unwrap();
     datastore.create_vertex_from_type(t).unwrap();

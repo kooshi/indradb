@@ -1,9 +1,10 @@
+use crate::util::Uuid;
+
 use super::Identifier;
 
 use chrono::offset::Utc;
 use chrono::DateTime;
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
 /// Represents a uniquely identifiable key to an edge.
 #[derive(Clone, Debug, Eq, PartialEq, Hash, Ord, PartialOrd, Serialize, Deserialize)]
@@ -77,9 +78,8 @@ impl Edge {
 #[cfg(test)]
 mod tests {
     use super::{Edge, EdgeKey};
-    use crate::models::Identifier;
+    use crate::{models::Identifier, util::Uuid};
     use chrono::Utc;
-    use uuid::Uuid;
 
     #[test]
     fn should_create_edge_with_current_datetime() {

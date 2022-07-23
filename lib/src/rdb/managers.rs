@@ -6,11 +6,11 @@ use std::u8;
 use crate::errors::Result;
 use crate::models;
 use crate::util;
+use crate::util::Uuid;
 
 use chrono::offset::Utc;
 use chrono::DateTime;
 use rocksdb::{ColumnFamily, DBIterator, Direction, IteratorMode, WriteBatch, DB};
-use uuid::Uuid;
 
 pub type OwnedPropertyItem = ((Uuid, models::Identifier), models::Json);
 pub type VertexItem = (Uuid, models::Identifier);

@@ -1,9 +1,7 @@
-use crate::{EdgeKey, Identifier, Vertex};
-
-use uuid::Uuid;
+use crate::{util::Uuid, EdgeKey, Identifier, Vertex};
 
 /// An item to insert, as part of a bulk insert request.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum BulkInsertItem {
     /// A vertex to insert.
     Vertex(Vertex),

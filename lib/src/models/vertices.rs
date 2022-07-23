@@ -1,7 +1,9 @@
 use std::hash::{Hash, Hasher};
 
-use crate::{util::generate_uuid_v1, Identifier};
-use uuid::Uuid;
+use crate::{
+    util::{generate_uuid_v1, Uuid},
+    Identifier,
+};
 
 /// A vertex.
 ///

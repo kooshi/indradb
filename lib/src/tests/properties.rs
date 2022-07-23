@@ -2,8 +2,6 @@ use crate::{
     Datastore, EdgeKey, EdgeQueryExt, Identifier, SpecificEdgeQuery, SpecificVertexQuery, Vertex, VertexQueryExt,
 };
 
-use uuid::Uuid;
-
 pub fn should_handle_vertex_properties<D: Datastore>(datastore: &D) {
     let t = Identifier::new("test_vertex_type").unwrap();
     let v = Vertex::new(t);

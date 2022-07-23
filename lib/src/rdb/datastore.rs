@@ -7,7 +7,7 @@ use std::usize;
 
 use super::managers::*;
 use crate::errors::{Error, Result};
-use crate::util::next_uuid;
+use crate::util::{next_uuid, Uuid};
 use crate::{
     BulkInsertItem, Datastore, Edge, EdgeDirection, EdgeKey, EdgeProperties, EdgeProperty, EdgePropertyQuery,
     EdgeQuery, Identifier, Json, NamedProperty, PropertyPresenceEdgeQuery, PropertyPresenceVertexQuery,
@@ -18,7 +18,6 @@ use crate::{
 use chrono::offset::Utc;
 use chrono::DateTime;
 use rocksdb::{DBCompactionStyle, Options, WriteBatch, DB};
-use uuid::Uuid;
 
 const CF_NAMES: [&str; 9] = [
     "vertices:v1",
