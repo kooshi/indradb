@@ -7,7 +7,7 @@ use std::usize;
 
 use super::managers::*;
 use crate::errors::{Error, Result};
-use crate::util::{next_uuid, Uuid};
+use crate::util::{next_uuid, Key};
 use crate::{
     BulkInsertItem, Datastore, Edge, EdgeDirection, EdgeKey, EdgeProperties, EdgeProperty, EdgePropertyQuery,
     EdgeQuery, Identifier, NamedProperty, PropertyPresenceEdgeQuery, PropertyPresenceVertexQuery,
@@ -85,11 +85,11 @@ fn vertices_from_piped_property_query(
     property_query: VertexQuery,
     intersection: bool,
 ) -> Result<Vec<VertexItem>> {
-    let mut piped_vertices_mapping: HashMap<Uuid, Identifier> =
+    let mut piped_vertices_mapping: HashMap<Key, Identifier> =
         execute_vertex_query(db_ref, inner_query)?.into_iter().collect();
-    let piped_vertices: HashSet<Uuid> = piped_vertices_mapping.keys().cloned().collect();
+    let piped_vertices: HashSet<Key> = piped_vertices_mapping.keys().cloned().collect();
 
-    let property_vertices: HashSet<Uuid> = {
+    let property_vertices: HashSet<Key> = {
         execute_vertex_query(db_ref, property_query)?
             .into_iter()
             .map(move |item| {
@@ -99,7 +99,7 @@ fn vertices_from_piped_property_query(
             .collect()
     };
 
-    let merged_vertices: Box<dyn Iterator<Item = &Uuid>> = if intersection {
+    let merged_vertices: Box<dyn Iterator<Item = &Key>> = if intersection {
         Box::new(piped_vertices.intersection(&property_vertices))
     } else {
         Box::new(piped_vertices.difference(&property_vertices))
@@ -182,7 +182,7 @@ fn execute_vertex_query(db_ref: DBRef<'_>, q: VertexQuery) -> Result<Vec<VertexI
                         Err(_) => return Ok(vec![]),
                     }
                 }
-                None => Uuid::default(),
+                None => Key::default(),
             };
 
             let mut iter: Box<dyn Iterator<Item = Result<VertexItem>>> =
@@ -495,7 +495,7 @@ impl Datastore for RocksdbDatastore {
         let indexed_properties = self.indexed_properties.read().unwrap();
         let db_ref = DBRef::new(&db, &indexed_properties);
         let vertex_manager = VertexManager::new(db_ref);
-        let iterator = vertex_manager.iterate_for_range(Uuid::default());
+        let iterator = vertex_manager.iterate_for_range(Key::default());
         Ok(iterator.count() as u64)
     }
 
@@ -550,7 +550,7 @@ impl Datastore for RocksdbDatastore {
         Ok(())
     }
 
-    fn get_edge_count(&self, id: Uuid, t: Option<&Identifier>, direction: EdgeDirection) -> Result<u64> {
+    fn get_edge_count(&self, id: Key, t: Option<&Identifier>, direction: EdgeDirection) -> Result<u64> {
         let db = self.db.clone();
         let indexed_properties = self.indexed_properties.read().unwrap();
         let db_ref = DBRef::new(&db, &indexed_properties);
@@ -764,7 +764,7 @@ impl Datastore for RocksdbDatastore {
         let metadata_manager = MetadataManager::new(&db);
         metadata_manager.set_indexed_properties(&mut batch, &indexed_properties)?;
 
-        for item in vertex_manager.iterate_for_range(Uuid::default()) {
+        for item in vertex_manager.iterate_for_range(Key::default()) {
             let (vertex_id, _) = item?;
             if let Some(property_value) = vertex_property_manager.get(vertex_id, &name)? {
                 vertex_property_value_manager.set(&mut batch, vertex_id, &name, &property_value);

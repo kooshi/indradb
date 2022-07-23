@@ -1,10 +1,10 @@
-use crate::{util::Uuid, Edge, EdgeKey, Identifier, Vertex};
+use crate::{util::Key, Edge, EdgeKey, Identifier, Vertex};
 
 /// Represents a vertex property.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct VertexProperty {
     /// The id of the vertex.
-    pub id: Uuid,
+    pub id: Key,
 
     /// The property value.
     pub value: Vec<u8>,
@@ -16,7 +16,7 @@ impl VertexProperty {
     /// # Arguments
     /// * `id`: The id of the vertex.
     /// * `value`: The property value.
-    pub fn new(id: Uuid, value: Vec<u8>) -> Self {
+    pub fn new(id: Key, value: Vec<u8>) -> Self {
         Self { id, value }
     }
 }

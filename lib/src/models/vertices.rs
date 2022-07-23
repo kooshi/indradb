@@ -1,7 +1,7 @@
 use std::hash::{Hash, Hasher};
 
 use crate::{
-    util::{generate_uuid_v1, Uuid},
+    util::{generate_uuid_v1, Key},
     Identifier,
 };
 
@@ -12,7 +12,7 @@ use crate::{
 #[derive(Clone, Debug)]
 pub struct Vertex {
     /// The id of the vertex.
-    pub id: Uuid,
+    pub id: Key,
 
     /// The type of the vertex.
     pub t: Identifier,
@@ -37,7 +37,7 @@ impl Vertex {
     ///
     /// * `id`: The id of the vertex.
     /// * `t`: The type of the vertex.
-    pub fn with_id(id: Uuid, t: Identifier) -> Self {
+    pub fn with_id(id: Key, t: Identifier) -> Self {
         Vertex { id, t }
     }
 }

@@ -1,7 +1,7 @@
 use std::str::FromStr;
 use std::u32;
 
-use crate::util::Uuid;
+use crate::util::Key;
 use crate::{errors, EdgeKey, Identifier};
 
 use chrono::offset::Utc;
@@ -261,7 +261,7 @@ pub struct RangeVertexQuery {
     pub t: Option<Identifier>,
 
     /// Sets the lowest vertex ID to return.
-    pub start_id: Option<Uuid>,
+    pub start_id: Option<Key>,
 }
 
 vertex_query_type!(RangeVertexQuery, Range);
@@ -310,7 +310,7 @@ impl RangeVertexQuery {
     ///
     /// # Arguments
     /// * `start_id`: The lowest vertex ID to return.
-    pub fn start_id(self, start_id: Uuid) -> Self {
+    pub fn start_id(self, start_id: Key) -> Self {
         Self {
             limit: self.limit,
             t: self.t,
@@ -323,7 +323,7 @@ impl RangeVertexQuery {
 #[derive(Eq, PartialEq, Clone, Debug)]
 pub struct SpecificVertexQuery {
     /// The IDs of the vertices to get.
-    pub ids: Vec<Uuid>,
+    pub ids: Vec<Key>,
 }
 
 vertex_query_type!(SpecificVertexQuery, Specific);
@@ -334,7 +334,7 @@ impl SpecificVertexQuery {
     ///
     /// Arguments
     /// * `ids`: The IDs of the vertices to get.
-    pub fn new(ids: Vec<Uuid>) -> Self {
+    pub fn new(ids: Vec<Key>) -> Self {
         Self { ids }
     }
 
@@ -342,7 +342,7 @@ impl SpecificVertexQuery {
     ///
     /// Arguments
     /// * `id`: The ID of the vertex to get.
-    pub fn single(id: Uuid) -> Self {
+    pub fn single(id: Key) -> Self {
         Self { ids: vec![id] }
     }
 }

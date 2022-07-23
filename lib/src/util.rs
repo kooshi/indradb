@@ -13,7 +13,7 @@ use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use chrono::offset::Utc;
 use chrono::{DateTime, Duration, NaiveDateTime, Timelike};
 use lazy_static::lazy_static;
-pub type Uuid = [u8; 20];
+pub type Key = [u8; 20];
 
 lazy_static! {
     //static ref CONTEXT: Context = Context::new(0);
@@ -28,11 +28,11 @@ lazy_static! {
 /// A byte-serializable value, frequently employed in the keys of key/value
 /// store.
 pub enum Component<'a> {
-    Uuid(Uuid),
+    Key(Key),
     FixedLengthString(&'a str),
     Identifier(&'a models::Identifier),
     DateTime(DateTime<Utc>),
-    Json(&'a Vec<u8>),
+    Value(&'a Vec<u8>),
 }
 
 impl<'a> Component<'a> {
@@ -43,17 +43,17 @@ impl<'a> Component<'a> {
 
     pub fn len(&self) -> usize {
         match *self {
-            Component::Uuid(_) => 16,
+            Component::Key(_) => 16,
             Component::FixedLengthString(s) => s.len(),
             Component::Identifier(t) => t.0.len() + 1,
             Component::DateTime(_) => 8,
-            Component::Json(_) => 8,
+            Component::Value(_) => 8,
         }
     }
 
     pub fn write(&self, cursor: &mut Cursor<Vec<u8>>) -> Result<(), IoError> {
         match *self {
-            Component::Uuid(uuid) => cursor.write_all(&uuid),
+            Component::Key(uuid) => cursor.write_all(&uuid),
             Component::FixedLengthString(s) => cursor.write_all(s.as_bytes()),
             Component::Identifier(i) => {
                 cursor.write_all(&[i.0.len() as u8])?;
@@ -63,7 +63,7 @@ impl<'a> Component<'a> {
                 let time_to_end = nanos_since_epoch(&MAX_DATETIME) - nanos_since_epoch(&datetime);
                 cursor.write_u64::<BigEndian>(time_to_end)
             }
-            Component::Json(json) => {
+            Component::Value(json) => {
                 let mut hasher = DefaultHasher::new();
                 json.hash(&mut hasher);
                 let hash = hasher.finish();
@@ -104,8 +104,8 @@ fn nanos_since_epoch(datetime: &DateTime<Utc>) -> u64 {
 ///
 /// # Arguments
 /// * `cursor`: The bytes to read from.
-pub fn read_uuid<T: AsRef<[u8]>>(cursor: &mut Cursor<T>) -> Uuid {
-    let mut buf: Uuid = Default::default();
+pub fn read_uuid<T: AsRef<[u8]>>(cursor: &mut Cursor<T>) -> Key {
+    let mut buf: Key = Default::default();
     cursor.read_exact(&mut buf).unwrap();
     buf
 }
@@ -156,7 +156,7 @@ pub fn read_u64<T: AsRef<[u8]>>(cursor: &mut Cursor<T>) -> u64 {
 
 /// Generates a UUID v1. This utility method uses a shared context and node ID
 /// to help ensure generated UUIDs are unique.
-pub fn generate_uuid_v1() -> Uuid {
+pub fn generate_uuid_v1() -> Key {
     rand::random()
 }
 
@@ -169,7 +169,7 @@ pub fn generate_uuid_v1() -> Uuid {
 /// # Errors
 /// Returns a `ValidationError` if the input UUID is the great possible value
 /// (i.e., FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF)
-pub fn next_uuid(uuid: Uuid) -> ValidationResult<Uuid> {
+pub fn next_uuid(uuid: Key) -> ValidationResult<Key> {
     let mut bytes = uuid;
 
     for i in (0..20).rev() {

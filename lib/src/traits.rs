@@ -1,7 +1,7 @@
 use crate::errors::{Error, Result};
 use crate::models;
 use crate::models::{EdgeQueryExt, VertexQueryExt};
-use crate::util::Uuid;
+use crate::util::Key;
 use std::vec::Vec;
 
 /// Specifies a datastore implementation.
@@ -44,7 +44,7 @@ pub trait Datastore {
     ///
     /// # Arguments
     /// * `t`: The type of the vertex to create.
-    fn create_vertex_from_type(&self, t: models::Identifier) -> Result<Uuid> {
+    fn create_vertex_from_type(&self, t: models::Identifier) -> Result<Key> {
         let v = models::Vertex::new(t);
 
         if !self.create_vertex(&v)? {
@@ -96,8 +96,7 @@ pub trait Datastore {
     /// * `id`: The id of the vertex.
     /// * `t`: Only get the count for a specified edge type.
     /// * `direction`: The direction of edges to get.
-    fn get_edge_count(&self, id: Uuid, t: Option<&models::Identifier>, direction: models::EdgeDirection)
-        -> Result<u64>;
+    fn get_edge_count(&self, id: Key, t: Option<&models::Identifier>, direction: models::EdgeDirection) -> Result<u64>;
 
     /// Gets vertex properties.
     ///
