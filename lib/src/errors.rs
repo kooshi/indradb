@@ -5,7 +5,6 @@ use std::result::Result as StdResult;
 use bincode::Error as BincodeError;
 #[cfg(feature = "rocksdb-datastore")]
 use rocksdb::Error as RocksDbError;
-use serde_json::Error as JsonError;
 
 /// An error triggered by the datastore
 #[non_exhaustive]
@@ -40,12 +39,6 @@ impl fmt::Display for Error {
             Error::NotIndexed => write!(f, "query attempted on a property that isn't indexed"),
             Error::Unsupported => write!(f, "functionality not supported"),
         }
-    }
-}
-
-impl From<JsonError> for Error {
-    fn from(err: JsonError) -> Self {
-        Error::Datastore(Box::new(err))
     }
 }
 

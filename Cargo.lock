@@ -435,7 +435,6 @@ dependencies = [
  "rand",
  "rocksdb",
  "serde",
- "serde_json",
  "tempfile",
 ]
 

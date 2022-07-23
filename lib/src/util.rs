@@ -32,7 +32,7 @@ pub enum Component<'a> {
     FixedLengthString(&'a str),
     Identifier(&'a models::Identifier),
     DateTime(DateTime<Utc>),
-    Json(&'a models::Json),
+    Json(&'a Vec<u8>),
 }
 
 impl<'a> Component<'a> {

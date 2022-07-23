@@ -30,12 +30,12 @@ pub fn should_bulk_insert<D: Datastore>(datastore: &D) {
         BulkInsertItem::VertexProperty(
             outbound_v.id,
             Identifier::new("vertex_property_name").unwrap(),
-            serde_json::Value::String("vertex_property_value".to_string()),
+            Vec<u8>::String("vertex_property_value".to_string()),
         ),
         BulkInsertItem::EdgeProperty(
             key.clone(),
             Identifier::new("edge_property_name").unwrap(),
-            serde_json::Value::String("edge_property_value".to_string()),
+            Vec<u8>::String("edge_property_value".to_string()),
         ),
     ];
 
@@ -74,7 +74,7 @@ pub fn should_bulk_insert<D: Datastore>(datastore: &D) {
     assert_eq!(vertex_properties[0].id, outbound_v.id);
     assert_eq!(
         vertex_properties[0].value,
-        serde_json::Value::String("vertex_property_value".to_string())
+        Vec<u8>::String("vertex_property_value".to_string())
     );
 
     let edge_properties = datastore
@@ -87,7 +87,7 @@ pub fn should_bulk_insert<D: Datastore>(datastore: &D) {
     assert_eq!(edge_properties[0].key, key);
     assert_eq!(
         edge_properties[0].value,
-        serde_json::Value::String("edge_property_value".to_string())
+        Vec<u8>::String("edge_property_value".to_string())
     );
 }
 

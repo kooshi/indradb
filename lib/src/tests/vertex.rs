@@ -156,7 +156,7 @@ pub fn should_delete_a_valid_outbound_vertex<D: Datastore>(datastore: &D) {
     datastore
         .set_vertex_properties(
             q.clone().property(models::Identifier::new("foo").unwrap()),
-            serde_json::Value::Bool(true),
+            Vec<u8>::Bool(true),
         )
         .unwrap();
     datastore.delete_vertices(q.clone().into()).unwrap();

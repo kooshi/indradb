@@ -6,7 +6,7 @@ fn setup_vertex_with_indexed_property<D: Datastore>(datastore: &D, property_name
     datastore.create_vertex(&v).unwrap();
     let q = models::SpecificVertexQuery::single(v.id).property(property_name.clone());
     datastore
-        .set_vertex_properties(q.clone(), serde_json::Value::Bool(true))
+        .set_vertex_properties(q.clone(), Vec<u8>::Bool(true))
         .unwrap();
     v.id
 }
@@ -26,7 +26,7 @@ fn setup_edge_with_indexed_property<D: Datastore>(
     let q = models::SpecificEdgeQuery::single(key.clone()).property(property_name.clone());
     datastore.create_edge(&key).unwrap();
     datastore
-        .set_edge_properties(q.clone(), serde_json::Value::Bool(true))
+        .set_edge_properties(q.clone(), Vec<u8>::Bool(true))
         .unwrap();
     key
 }
@@ -56,7 +56,7 @@ pub fn should_index_existing_vertex_property<D: Datastore>(datastore: &D) {
     datastore.create_vertex(&v).unwrap();
     let q = models::SpecificVertexQuery::single(v.id);
     datastore
-        .set_vertex_properties(q.clone().property(property_name.clone()), serde_json::Value::Bool(true))
+        .set_vertex_properties(q.clone().property(property_name.clone()), Vec<u8>::Bool(true))
         .unwrap();
 
     // Index property
@@ -90,7 +90,7 @@ pub fn should_index_existing_edge_property<D: Datastore>(datastore: &D) {
     let q = models::SpecificEdgeQuery::single(key.clone());
     datastore.create_edge(&key).unwrap();
     datastore
-        .set_edge_properties(q.clone().property(property_name.clone()), serde_json::Value::Bool(true))
+        .set_edge_properties(q.clone().property(property_name.clone()), Vec<u8>::Bool(true))
         .unwrap();
 
     // Index property
@@ -134,8 +134,8 @@ pub fn should_delete_indexed_edge_property<D: Datastore>(datastore: &D) {
 }
 
 pub fn should_update_indexed_vertex_property<D: Datastore>(datastore: &D) {
-    let json_true = serde_json::Value::Bool(true);
-    let json_false = serde_json::Value::Bool(false);
+    let json_true = Vec<u8>::Bool(true);
+    let json_false = Vec<u8>::Bool(false);
     let property_name = models::Identifier::new("updateable-vertex-property").unwrap();
 
     let id = setup_vertex_with_indexed_property(datastore, &property_name);
@@ -192,8 +192,8 @@ pub fn should_update_indexed_vertex_property<D: Datastore>(datastore: &D) {
 }
 
 pub fn should_update_indexed_edge_property<D: Datastore>(datastore: &D) {
-    let json_true = serde_json::Value::Bool(true);
-    let json_false = serde_json::Value::Bool(false);
+    let json_true = Vec<u8>::Bool(true);
+    let json_false = Vec<u8>::Bool(false);
     let property_name = models::Identifier::new("updateable-edge-property").unwrap();
 
     let key = setup_edge_with_indexed_property(datastore, &property_name);

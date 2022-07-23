@@ -113,7 +113,7 @@ pub fn should_delete_a_valid_edge<D: Datastore>(datastore: &D) {
     datastore
         .set_edge_properties(
             q.clone().property(models::Identifier::new("foo").unwrap()),
-            serde_json::Value::Bool(true),
+            Vec<u8>::Bool(true),
         )
         .unwrap();
 

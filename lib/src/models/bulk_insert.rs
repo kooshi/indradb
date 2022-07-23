@@ -8,7 +8,7 @@ pub enum BulkInsertItem {
     /// An edge to insert.
     Edge(EdgeKey),
     /// A vertex property to insert.
-    VertexProperty(Uuid, Identifier, serde_json::Value),
+    VertexProperty(Uuid, Identifier, Vec<u8>),
     /// An edge property to insert.
-    EdgeProperty(EdgeKey, Identifier, serde_json::Value),
+    EdgeProperty(EdgeKey, Identifier, Vec<u8>),
 }

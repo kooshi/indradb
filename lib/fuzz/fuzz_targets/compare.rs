@@ -545,14 +545,14 @@ pub enum Json {
     Object(HashMap<String, Json>),
 }
 
-impl Into<serde_json::Value> for Json {
-    fn into(self) -> serde_json::Value {
+impl Into<Vec<u8>> for Json {
+    fn into(self) -> Vec<u8> {
         match self {
-            Json::Null => serde_json::Value::Null,
-            Json::Bool(b) => serde_json::Value::Bool(b),
-            Json::Number(n) => serde_json::Value::Number(n.into()),
-            Json::String(s) => serde_json::Value::String(s),
-            Json::Array(v) => serde_json::Value::Array(v.into_iter().map(|i| i.into()).collect()),
+            Json::Null => Vec<u8>::Null,
+            Json::Bool(b) => Vec<u8>::Bool(b),
+            Json::Number(n) => Vec<u8>::Number(n.into()),
+            Json::String(s) => Vec<u8>::String(s),
+            Json::Array(v) => Vec<u8>::Array(v.into_iter().map(|i| i.into()).collect()),
             Json::Object(o) => {
                 let mut m = serde_json::Map::new();
 
@@ -560,7 +560,7 @@ impl Into<serde_json::Value> for Json {
                     m.insert(k, v.into());
                 }
 
-                serde_json::Value::Object(m)
+                Vec<u8>::Object(m)
             }
         }
     }
@@ -693,7 +693,7 @@ fuzz_target!(|ops: Vec<Op>| {
             }
             Op::SetVertexProperties(q, value) => {
                 let q: indradb::VertexPropertyQuery = q.into();
-                let value: serde_json::Value = value.into();
+                let value: Vec<u8> = value.into();
                 let v1 = d1.set_vertex_properties(q.clone(), value.clone());
                 let v2 = d2.set_vertex_properties(q, value);
                 cmp!(v1, v2);
@@ -718,7 +718,7 @@ fuzz_target!(|ops: Vec<Op>| {
             }
             Op::SetEdgeProperties(q, value) => {
                 let q: indradb::EdgePropertyQuery = q.into();
-                let value: serde_json::Value = value.into();
+                let value: Vec<u8> = value.into();
                 let v1 = d1.set_edge_properties(q.clone(), value.clone());
                 let v2 = d2.set_edge_properties(q, value);
                 cmp!(v1, v2);
