@@ -13,7 +13,9 @@ use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use chrono::offset::Utc;
 use chrono::{DateTime, Duration, NaiveDateTime, Timelike};
 use lazy_static::lazy_static;
-pub type Key = [u8; 20];
+
+pub const KEY_LEN: usize = 20;
+pub type Key = [u8; KEY_LEN];
 
 lazy_static! {
     //static ref CONTEXT: Context = Context::new(0);
@@ -43,7 +45,7 @@ impl<'a> Component<'a> {
 
     pub fn len(&self) -> usize {
         match *self {
-            Component::Key(_) => 16,
+            Component::Key(_) => KEY_LEN,
             Component::FixedLengthString(s) => s.len(),
             Component::Identifier(t) => t.0.len() + 1,
             Component::DateTime(_) => 8,
@@ -53,7 +55,7 @@ impl<'a> Component<'a> {
 
     pub fn write(&self, cursor: &mut Cursor<Vec<u8>>) -> Result<(), IoError> {
         match *self {
-            Component::Key(uuid) => cursor.write_all(&uuid),
+            Component::Key(key) => cursor.write_all(&key),
             Component::FixedLengthString(s) => cursor.write_all(s.as_bytes()),
             Component::Identifier(i) => {
                 cursor.write_all(&[i.0.len() as u8])?;
@@ -63,9 +65,9 @@ impl<'a> Component<'a> {
                 let time_to_end = nanos_since_epoch(&MAX_DATETIME) - nanos_since_epoch(&datetime);
                 cursor.write_u64::<BigEndian>(time_to_end)
             }
-            Component::Value(json) => {
+            Component::Value(value) => {
                 let mut hasher = DefaultHasher::new();
-                json.hash(&mut hasher);
+                value.hash(&mut hasher);
                 let hash = hasher.finish();
                 cursor.write_u64::<BigEndian>(hash)
             }
@@ -172,7 +174,7 @@ pub fn generate_uuid_v1() -> Key {
 pub fn next_uuid(uuid: Key) -> ValidationResult<Key> {
     let mut bytes = uuid;
 
-    for i in (0..20).rev() {
+    for i in (0..KEY_LEN).rev() {
         if bytes[i] < 255 {
             bytes[i] += 1;
             return Ok(bytes);

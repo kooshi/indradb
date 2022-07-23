@@ -6,7 +6,7 @@ use std::u8;
 use crate::errors::Result;
 use crate::models;
 use crate::util;
-use crate::util::Key;
+use crate::util::{Key, KEY_LEN};
 
 use chrono::offset::Utc;
 use chrono::DateTime;
@@ -79,7 +79,7 @@ impl<'a> VertexManager<'a> {
             let (k, v) = item;
 
             let id = {
-                debug_assert_eq!(k.len(), 16);
+                debug_assert_eq!(k.len(), KEY_LEN);
                 let mut cursor = Cursor::new(k);
                 util::read_uuid(&mut cursor)
             };
