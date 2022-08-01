@@ -27,10 +27,10 @@ impl EdgeKey {
     /// * `outbound_id`: The id of the outbound vertex.
     /// * `t`: The type of the edge.
     /// * `inbound_id`: The id of the inbound vertex.
-    pub fn new(outbound_id: Key, t: Identifier, inbound_id: Key) -> EdgeKey {
+    pub fn new<I: Into<Identifier>>(outbound_id: Key, t: I, inbound_id: Key) -> EdgeKey {
         EdgeKey {
             outbound_id,
-            t,
+            t: t.into(),
             inbound_id,
         }
     }

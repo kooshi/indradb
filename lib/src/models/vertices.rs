@@ -27,7 +27,7 @@ impl Vertex {
     /// # Arguments
     ///
     /// * `t`: The type of the vertex.
-    pub fn new(t: Identifier) -> Self {
+    pub fn new<I: Into<Identifier>>(t: I) -> Self {
         Self::with_id(generate_uuid_v1(), t)
     }
 
@@ -37,8 +37,8 @@ impl Vertex {
     ///
     /// * `id`: The id of the vertex.
     /// * `t`: The type of the vertex.
-    pub fn with_id(id: Key, t: Identifier) -> Self {
-        Vertex { id, t }
+    pub fn with_id<I: Into<Identifier>>(id: Key, t: I) -> Self {
+        Vertex { id, t: t.into() }
     }
 }
 

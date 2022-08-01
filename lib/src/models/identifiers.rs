@@ -83,6 +83,12 @@ impl ToString for Identifier {
     }
 }
 
+impl From<&str> for Identifier {
+    fn from(s: &str) -> Self {
+        Self::from_str(s).unwrap()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::Identifier;

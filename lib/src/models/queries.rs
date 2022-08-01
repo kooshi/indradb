@@ -298,10 +298,10 @@ impl RangeVertexQuery {
     ///
     /// # Arguments
     /// * `t`: Sets the type filter.
-    pub fn t(self, t: Identifier) -> Self {
+    pub fn t<T: Into<Identifier>>(self, t: T) -> Self {
         Self {
             limit: self.limit,
-            t: Some(t),
+            t: Some(t.into()),
             start_id: self.start_id,
         }
     }
@@ -401,12 +401,12 @@ impl PipeVertexQuery {
     ///
     /// # Arguments
     /// * `t`: Sets the type filter.
-    pub fn t(self, t: Identifier) -> Self {
+    pub fn t<T: Into<Identifier>>(self, t: T) -> Self {
         Self {
             inner: self.inner,
             direction: self.direction,
             limit: self.limit,
-            t: Some(t),
+            t: Some(t.into()),
         }
     }
 }
@@ -708,12 +708,12 @@ impl PipeEdgeQuery {
     ///
     /// # Arguments
     /// * `t`: Sets the type filter.
-    pub fn t(self, t: Identifier) -> Self {
+    pub fn t<T: Into<Identifier>>(self, t: T) -> Self {
         Self {
             inner: self.inner,
             direction: self.direction,
             limit: self.limit,
-            t: Some(t),
+            t: Some(t.into()),
             high: self.high,
             low: self.low,
         }
